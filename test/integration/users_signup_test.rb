@@ -11,6 +11,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                password_confirmation: "bar" }
     end
     assert_template 'users/new'
+    assert_select '#error_explanation'
+    assert_select '.field_with_errors', count: 8
   end
   
   test "valid signup information" do
@@ -22,6 +24,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                             password_confirmation: "password" }
     end
     assert_template 'users/show'
+    assert_not flash.empty?
+    assert_select '.alert-success'
+    assert is_logged_in?
   end
   
 end
